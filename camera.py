@@ -86,3 +86,15 @@ class Camera:
                 available.append(i)
                 cap.release()
         return available
+    
+    def switch_camera(self, camera_id):
+        """Switch to a different camera"""
+        if self.camera.isOpened():
+            self.camera.release()
+        
+        self.camera = cv.VideoCapture(camera_id)
+        if not self.camera.isOpened():
+            raise ValueError(f"Unable to open camera {camera_id}!")
+        
+        self.width = int(self.camera.get(cv.CAP_PROP_FRAME_WIDTH))
+        self.height = int(self.camera.get(cv.CAP_PROP_FRAME_HEIGHT))
