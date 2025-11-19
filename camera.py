@@ -11,6 +11,24 @@ class Camera:
         self.width = int(self.camera.get(cv.CAP_PROP_FRAME_WIDTH))
         self.height = int(self.camera.get(cv.CAP_PROP_FRAME_HEIGHT))
         
+        # Set optimal camera properties
+        self.camera.set(cv.CAP_PROP_BUFFERSIZE, 1)
+        self.camera.set(cv.CAP_PROP_FPS, 30)
+        self.camera.set(cv.CAP_PROP_AUTOFOCUS, 1)
+        
+        # Image adjustment properties
+        self.brightness = 0
+        self.contrast = 1.0
+        self.saturation = 1.0
+        self.flip_horizontal = False
+        self.flip_vertical = False
+        
+        # FPS tracking
+        self.fps_history = deque(maxlen=30)
+        self.frame_count = 0
+        
+        self.lock = threading.Lock()
+        
     
     def __del__(self):
         if self.camera.isOpened():
