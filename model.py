@@ -125,3 +125,40 @@ class Model:
         except Exception as e:
             print(f"Error loading model: {str(e)}")
         return False
+
+    def predict(self, frame, return_scores=False):
+        """Make a prediction on a frame"""
+        if not self.is_trained:
+            return None, 0.0
+
+        try:
+            if frame[0] and frame[1] is not None:
+                frame_img = frame[1]
+                
+                # Convert to grayscale and resize
+                gray = cv.cvtColor(frame_img, cv.COLOR_RGB2GRAY)
+                resized = cv.resize(gray, (150, 150))
+                features = resized.reshape(1, -1)
+                
+                # Scale features
+                features = self.scaler.transform(features)
+                
+                # Make prediction
+                prediction = self.model.predict(features)[0]
+                
+                # Get confidence scores
+                if hasattr(self.model, 'decision_function'):
+                    scores = self.model.decision_function(features)[0]
+                    confidence = abs(scores[0]) if len(scores) > 0 else 0.0
+                else:  # RandomForest
+                    proba = self.model.predict_proba(features)[0]
+                    confidence = max(proba) if len(proba) > 0 else 0.0
+                
+                if return_scores:
+                    return prediction, confidence, scores if hasattr(self.model, 'decision_function') else proba
+                return prediction, confidence
+            
+        except Exception as e:
+            print(f"Error during prediction: {str(e)}")
+        
+        return None, 0.0
