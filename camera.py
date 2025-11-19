@@ -76,4 +76,13 @@ class Camera:
         else:
             return (False, None)
     
-        
+    
+    def get_available_cameras(self):
+        """Detect available cameras"""
+        available = []
+        for i in range(5):
+            cap = cv.VideoCapture(i)
+            if cap.isOpened():
+                available.append(i)
+                cap.release()
+        return available
