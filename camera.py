@@ -51,4 +51,29 @@ class Camera:
         
         return frame
     
+    def get_frame(self):
+        """Retrieve and process frame from camera"""
+        if self.camera.isOpened():
+            ret, frame = self.camera.read()
+
+            if ret:
+                # Convert BGR to RGB
+                frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+                
+                # Apply adjustments
+                frame = self.adjust_image(frame)
+                
+                # Apply flips
+                if self.flip_horizontal:
+                    frame = cv.flip(frame, 1)
+                if self.flip_vertical:
+                    frame = cv.flip(frame, 0)
+                
+                self.frame_count += 1
+                return (ret, frame)
+            else:
+                return (ret, None)
+        else:
+            return (False, None)
+    
         
