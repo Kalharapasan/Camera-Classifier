@@ -10,3 +10,14 @@ import joblib
 from datetime import datetime
 
 class Model:
+    
+    def _create_model(self, algorithm):
+        """Create model based on algorithm choice"""
+        if algorithm == 'svm':
+            return LinearSVC(max_iter=2000, dual=False, random_state=42)
+        elif algorithm == 'rf':
+            return RandomForestClassifier(n_estimators=100, random_state=42)
+        else:
+            return LinearSVC(max_iter=2000, dual=False, random_state=42)
+        
+    
