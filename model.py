@@ -112,3 +112,16 @@ class Model:
         except Exception as e:
             print(f"Error during training: {str(e)}")
             return False, 0.0
+    
+    def load_model(self):
+        """Load a previously trained model"""
+        try:
+            if os.path.exists('trained_model.pkl') and os.path.exists('scaler.pkl'):
+                self.model = joblib.load('trained_model.pkl')
+                self.scaler = joblib.load('scaler.pkl')
+                self.is_trained = True
+                print("Model loaded successfully!")
+                return True
+        except Exception as e:
+            print(f"Error loading model: {str(e)}")
+        return False
