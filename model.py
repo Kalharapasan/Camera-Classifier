@@ -10,6 +10,14 @@ import joblib
 from datetime import datetime
 
 class Model:
+    def __init__(self, algorithm='svm'):
+        self.algorithm = algorithm
+        self.model = self._create_model(algorithm)
+        self.scaler = StandardScaler()
+        self.is_trained = False
+        self.accuracy = 0.0
+        self.training_samples = 0
+        self.last_trained = None
     
     def _create_model(self, algorithm):
         """Create model based on algorithm choice"""
