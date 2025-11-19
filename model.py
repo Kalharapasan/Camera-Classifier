@@ -53,3 +53,62 @@ class Model:
             print(f"Error extracting features: {str(e)}")
             return None
     
+    def train_model(self, counters):
+        """Train the model with cross-validation"""
+        img_list = []
+        class_list = []
+
+        try:
+            # Load class 1 images
+            if counters[0] > 1 and os.path.exists('1'):
+                for i in range(1, counters[0]):
+                    img_path = f'1/frame{i}.jpg'
+                    if os.path.exists(img_path):
+                        features = self.extract_features(img_path)
+                        if features is not None:
+                            img_list.append(features)
+                            class_list.append(1)
+
+            # Load class 2 images
+            if counters[1] > 1 and os.path.exists('2'):
+                for i in range(1, counters[1]):
+                    img_path = f'2/frame{i}.jpg'
+                    if os.path.exists(img_path):
+                        features = self.extract_features(img_path)
+                        if features is not None:
+                            img_list.append(features)
+                            class_list.append(2)
+
+            if len(img_list) < 2:
+                raise ValueError("Insufficient training data. Need at least 2 images.")
+
+            # Convert to numpy arrays
+            img_array = np.array(img_list)
+            class_array = np.array(class_list)
+            
+            # Scale features
+            img_array = self.scaler.fit_transform(img_array)
+            
+            # Train model
+            self.model.fit(img_array, class_array)
+            
+            # Calculate accuracy with cross-validation
+            cv_scores = cross_val_score(self.model, img_array, class_array, cv=min(5, len(img_array)))
+            self.accuracy = cv_scores.mean()
+            self.training_samples = len(img_array)
+            self.last_trained = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+            self.is_trained = True
+            
+            # Save model and scaler
+            joblib.dump(self.model, 'trained_model.pkl')
+            joblib.dump(self.scaler, 'scaler.pkl')
+            
+            print(f"Model successfully trained!")
+            print(f"Accuracy: {self.accuracy:.2%}")
+            print(f"Training samples: {self.training_samples}")
+            return True, self.accuracy
+
+        except Exception as e:
+            print(f"Error during training: {str(e)}")
+            return False, 0.0
