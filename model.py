@@ -162,3 +162,13 @@ class Model:
             print(f"Error during prediction: {str(e)}")
         
         return None, 0.0
+    
+    def get_model_info(self):
+        """Return model information"""
+        return {
+            'algorithm': self.algorithm,
+            'is_trained': self.is_trained,
+            'accuracy': self.accuracy,
+            'samples': self.training_samples,
+            'last_trained': self.last_trained
+        }
