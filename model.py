@@ -19,5 +19,12 @@ class Model:
             return RandomForestClassifier(n_estimators=100, random_state=42)
         else:
             return LinearSVC(max_iter=2000, dual=False, random_state=42)
+    
+    def switch_algorithm(self, algorithm):
+        """Switch to a different algorithm"""
+        self.algorithm = algorithm
+        self.model = self._create_model(algorithm)
+        self.is_trained = False
+        self.accuracy = 0.0
         
     
