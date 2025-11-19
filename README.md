@@ -21,16 +21,19 @@ A real-time camera-based image classification application built with Python, Ope
 
 ![Main Interface](screenshots/main_interface.png)
 *The main application window showing live camera feed, prediction results, and control panels*
+<img width="1366" height="732" alt="main_interface" src="https://github.com/user-attachments/assets/ede96c05-8601-4ec5-be20-0b43dd3615a6" />
 
 ### Training Process
 
 ![Training Process](screenshots/training_process.png)
 *Capture training images and train your machine learning model*
+<img width="1366" height="740" alt="training_process" src="https://github.com/user-attachments/assets/186bdbfd-36ed-45b8-a359-2e2ee1de4e31" />
 
 ### Real-time Classification
 
 ![Real-time Classification](screenshots/real_time_classification.png)
 *Live classification with confidence scores and statistics*
+<img width="1365" height="729" alt="real_time_classification" src="https://github.com/user-attachments/assets/034a6f5d-583d-4bda-9d26-2c9b69cdfce6" />
 
 > **Note**: Screenshots will be added in future updates. The application provides a modern, intuitive interface for all operations.
 
